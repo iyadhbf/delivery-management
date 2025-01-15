@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addDelivery } from '../services/api';
-import erreurImage from '../assets/erreur.png';
-
 
 const AddDelivery = () => {
   const navigate = useNavigate();
@@ -10,9 +8,21 @@ const AddDelivery = () => {
     clientName: '',
     address: '',
     status: 'en cours',
-    assignedTo: '',
+    assignedTo: '', // Pre-filled with gestionnaire's username
   });
   const [error, setError] = useState('');
+  const userRole = localStorage.getItem('userRole');
+  const userName = localStorage.getItem('userName'); // Assuming username is stored in localStorage
+
+  // Automatically fill "Assigned To" with logged-in gestionnaire's username
+  useEffect(() => {
+    if (userRole === 'gestionnaire') {
+      setFormData((prevData) => ({
+        ...prevData,
+        assignedTo: userName || 'Unknown',
+      }));
+    }
+  }, [userRole, userName]);
 
   const handleChange = (e) => {
     setFormData({
@@ -27,20 +37,13 @@ const AddDelivery = () => {
       await addDelivery(formData);
       navigate('/dashboard');
     } catch (err) {
-      setError('Error adding delivery. Please try again.');
+      setError(err.response?.data?.message || 'Error adding delivery. Please try again.');
       console.error(err);
     }
   };
 
-  const userRole = localStorage.getItem('userRole');
-
   if (userRole !== 'gestionnaire') {
-    return (
-      <div className="text-center">
-        <img src={erreurImage} alt="Access Denied" className="mx-auto my-4 w-1/2" />
-        <h1 className="text-red-500 text-xl">Access Denied</h1>
-      </div>
-    );
+    return <h1 className="text-center text-red-500">Access Denied</h1>;
   }
 
   return (
@@ -48,6 +51,7 @@ const AddDelivery = () => {
       <h1 className="text-2xl font-bold mb-4">Add Delivery</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded shadow">
+        {/* Client Name */}
         <div className="mb-4">
           <label htmlFor="clientName" className="block text-sm font-medium text-gray-700">
             Client Name
@@ -62,6 +66,8 @@ const AddDelivery = () => {
             className="mt-1 block w-full border border-gray-300 rounded-md p-2"
           />
         </div>
+
+        {/* Address */}
         <div className="mb-4">
           <label htmlFor="address" className="block text-sm font-medium text-gray-700">
             Address
@@ -76,6 +82,8 @@ const AddDelivery = () => {
             className="mt-1 block w-full border border-gray-300 rounded-md p-2"
           />
         </div>
+
+        {/* Status */}
         <div className="mb-4">
           <label htmlFor="status" className="block text-sm font-medium text-gray-700">
             Status
@@ -91,6 +99,8 @@ const AddDelivery = () => {
             <option value="livré">Livré</option>
           </select>
         </div>
+
+        {/* Assigned To */}
         <div className="mb-4">
           <label htmlFor="assignedTo" className="block text-sm font-medium text-gray-700">
             Assigned To
@@ -100,11 +110,12 @@ const AddDelivery = () => {
             id="assignedTo"
             name="assignedTo"
             value={formData.assignedTo}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            readOnly // Make the field read-only
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100"
           />
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"

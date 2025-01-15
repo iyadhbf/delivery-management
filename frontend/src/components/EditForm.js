@@ -6,7 +6,6 @@ const EditForm = ({ delivery, userRole, onClose, onSave }) => {
     clientName: delivery.clientName,
     address: delivery.address,
     status: delivery.status,
-    assignedTo: delivery.assignedTo,
   });
 
   const handleChange = (e) => {
@@ -48,16 +47,6 @@ const EditForm = ({ delivery, userRole, onClose, onSave }) => {
                   type="text"
                   name="address"
                   value={formData.address}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block font-medium mb-1">Assigned To</label>
-                <input
-                  type="text"
-                  name="assignedTo"
-                  value={formData.assignedTo}
                   onChange={handleChange}
                   className="w-full border rounded px-3 py-2"
                 />
