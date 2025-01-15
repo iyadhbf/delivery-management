@@ -1,41 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import NotFound from "./pages/NotFound";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
+import AddDelivery from './components/AddDelivery';
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("token")
-  );
-
-  // Update authentication status on token change
-  useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem("token"));
-  }, []);
-
   return (
     <Router>
-      <div className="App">
+      <div>
+        <Navbar />
         <Routes>
-          {/* Public Routes */}
-          <Route
-            path="/login"
-            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login setIsAuthenticated={setIsAuthenticated} />}
-          />
-          <Route
-            path="/register"
-            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />}
-          />
-
-          {/* Private Routes */}
-          <Route
-            path="/dashboard"
-            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
-          />
-
-          {/* Fallback Route */}
+          <Route path="/" exact element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/add-delivery" element={<AddDelivery />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

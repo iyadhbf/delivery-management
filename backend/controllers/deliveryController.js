@@ -39,10 +39,11 @@ exports.deleteDelivery = async (req, res) => {
 };
 
 exports.getDeliveries = async (req, res) => {
-  try {
-    const deliveries = await Delivery.find().populate('assignedTo');
-    res.status(200).json(deliveries);
-  } catch (err) {
-    res.status(400).json({ errors: err.message });
-  }
-};
+    try {
+      const deliveries = await Delivery.find().populate('assignedTo');
+      res.status(200).json(deliveries);
+    } catch (err) {
+      res.status(400).json({ errors: err.message });
+    }
+  };
+  

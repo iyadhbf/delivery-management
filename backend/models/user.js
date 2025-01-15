@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+// Define User schema
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -8,6 +9,7 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, enum: ['gestionnaire', 'livreur'], default: 'livreur' },
 });
 
+// Hash password before saving
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt();
@@ -15,6 +17,7 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
+// Static method for login
 UserSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
@@ -22,9 +25,9 @@ UserSchema.statics.login = async function (email, password) {
     if (auth) {
       return user;
     }
-    throw Error('incorrect password');
+    throw Error('Incorrect password');
   }
-  throw Error('incorrect email');
+  throw Error('Incorrect email');
 };
 
 module.exports = mongoose.model('User', UserSchema);
