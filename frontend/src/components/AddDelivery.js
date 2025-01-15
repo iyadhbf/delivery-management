@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addDelivery } from '../services/api';
+import erreurImage from '../assets/erreur.png';
+
 
 const AddDelivery = () => {
   const navigate = useNavigate();
@@ -33,7 +35,12 @@ const AddDelivery = () => {
   const userRole = localStorage.getItem('userRole');
 
   if (userRole !== 'gestionnaire') {
-    return <h1 className="text-center text-red-500">Access Denied</h1>;
+    return (
+      <div className="text-center">
+        <img src={erreurImage} alt="Access Denied" className="mx-auto my-4 w-1/2" />
+        <h1 className="text-red-500 text-xl">Access Denied</h1>
+      </div>
+    );
   }
 
   return (
