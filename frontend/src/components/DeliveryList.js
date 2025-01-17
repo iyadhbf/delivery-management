@@ -6,6 +6,8 @@ import EditForm from './EditForm';
 const DeliveryList = ({ deliveries, onDelete, onUpdate }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDelivery, setSelectedDelivery] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
 
   const handleEdit = (delivery) => {
     setSelectedDelivery(delivery);
@@ -32,8 +34,45 @@ const DeliveryList = ({ deliveries, onDelete, onUpdate }) => {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   };
 
+  // Filter and search logic
+  const filteredDeliveries = deliveries
+    .filter((delivery) => {
+      if (filterStatus === 'all') return true;
+      return delivery.status === filterStatus;
+    })
+    .filter((delivery) => {
+      const query = searchQuery.toLowerCase();
+      return (
+        delivery.clientName.toLowerCase().includes(query) ||
+        delivery.address.toLowerCase().includes(query) ||
+        (typeof delivery.assignedTo === 'object'
+          ? delivery.assignedTo.name.toLowerCase().includes(query)
+          : delivery.assignedTo.toLowerCase().includes(query))
+      );
+    });
+
   return (
     <>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border px-4 py-2 rounded-md mr-4"
+        />
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="border px-4 py-2 rounded-md"
+        >
+          <option value="all">All</option>
+          <option value="en cours">En Cours</option>
+          <option value="livré">Livré</option>
+          <option value="annulé">Annulé</option>
+        </select>
+      </div>
+
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -55,7 +94,7 @@ const DeliveryList = ({ deliveries, onDelete, onUpdate }) => {
             </tr>
           </thead>
           <tbody>
-            {deliveries.map((delivery) => (
+            {filteredDeliveries.map((delivery) => (
               <tr key={delivery._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {delivery.clientName}
