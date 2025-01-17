@@ -15,16 +15,21 @@ if (!status || !['en cours', 'livré', 'annulé'].includes(status)) {
 
 exports.updateDelivery = async (req, res) => {
   const { id } = req.params;
-  const { status, assignedTo } = req.body;
+  const { status, assignedTo, address } = req.body; // Include address here
 
   try {
-    const delivery = await Delivery.findByIdAndUpdate(id, { status, assignedTo }, { new: true });
+    const delivery = await Delivery.findByIdAndUpdate(
+      id,
+      { status, assignedTo, address }, // Include address in the update
+      { new: true }
+    );
     if (!delivery) return res.status(404).json({ errors: 'Delivery not found' });
     res.status(200).json(delivery);
   } catch (err) {
     res.status(400).json({ errors: err.message });
   }
 };
+
 
 exports.deleteDelivery = async (req, res) => {
   const { id } = req.params;

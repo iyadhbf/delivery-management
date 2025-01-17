@@ -28,6 +28,10 @@ const DeliveryList = ({ deliveries, onDelete, onUpdate }) => {
 
   const userRole = localStorage.getItem('userRole');
 
+  const getGoogleMapsLink = (address) => {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  };
+
   return (
     <>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -56,12 +60,21 @@ const DeliveryList = ({ deliveries, onDelete, onUpdate }) => {
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {delivery.clientName}
                 </th>
-                <td className="px-6 py-4">{delivery.address}</td>
+                <td className="px-6 py-4">
+                  <a
+                    href={getGoogleMapsLink(delivery.address)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    View on Google Maps
+                  </a>
+                </td>
                 <td className="px-6 py-4">{delivery.status}</td>
                 <td className="px-6 py-4">
                   {typeof delivery.assignedTo === 'object' ? delivery.assignedTo.name : delivery.assignedTo}
                 </td>
-                { (
+                {userRole === 'gestionnaire' && (
                   <>
                     <td className="px-6 py-4 text-right">
                       <button
