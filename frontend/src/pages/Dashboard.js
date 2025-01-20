@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DeliveryList from '../components/DeliveryList';
 import { getDeliveries } from '../services/api';
 
+
 const Dashboard = () => {
   const [deliveries, setDeliveries] = useState([]);
 
@@ -33,6 +34,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-center mb-8">Dashboard</h1>
+      
       <DeliveryList deliveries={deliveries} onDelete={handleDelete} onUpdate={handleUpdate} />
     </div>
   );
