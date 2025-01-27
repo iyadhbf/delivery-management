@@ -8,21 +8,22 @@ const AddDelivery = () => {
     clientName: '',
     address: '',
     status: 'en cours',
-    assignedTo: '', // Pre-filled with gestionnaire's username
+    assignedTo: '', // This will hold the userId
   });
   const [error, setError] = useState('');
   const userRole = localStorage.getItem('userRole');
-  const userName = localStorage.getItem('userName'); // Assuming username is stored in localStorage
+  const userName = localStorage.getItem('userName'); // Display username
+  const userId = localStorage.getItem('userId'); // Backend expects this as assignedTo
 
-  // Automatically fill "Assigned To" with logged-in gestionnaire's username
   useEffect(() => {
-    if (userRole === 'gestionnaire') {
+    // Pre-fill the assignedTo field with userId if user is a gestionnaire
+    if (userRole === 'gestionnaire' && userId) {
       setFormData((prevData) => ({
         ...prevData,
-        assignedTo: userName || 'Unknown',
+        assignedTo: userId,
       }));
     }
-  }, [userRole, userName]);
+  }, [userRole, userId]);
 
   const handleChange = (e) => {
     setFormData({
@@ -34,11 +35,14 @@ const AddDelivery = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!formData.assignedTo) {
+        throw new Error('Assigned To field is missing or invalid.');
+      }
       await addDelivery(formData);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Error adding delivery. Please try again.');
-      console.error(err);
+      setError(err.response?.data?.error || 'Error adding delivery. Please try again.');
+      console.error('Error response:', err.response || err.message);
     }
   };
 
@@ -109,8 +113,8 @@ const AddDelivery = () => {
             type="text"
             id="assignedTo"
             name="assignedTo"
-            value={formData.assignedTo}
-            readOnly // Make the field read-only
+            value={userName || 'Unknown'}
+            readOnly
             className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100"
           />
         </div>

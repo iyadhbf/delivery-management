@@ -16,14 +16,16 @@ const Login = () => {
       // Store token in localStorage
       localStorage.setItem('token', token);
 
-      // Decode the token to extract user role and name
+      // Decode the token to extract user data
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const userRole = decodedToken.role || 'undefined'; // Default to 'undefined' if role is missing
       const userName = decodedToken.name || 'User'; // Default to 'User' if name is missing
+      const userId = decodedToken.id || ''; // Default to empty string if id is missing
 
-      // Store user role and name in localStorage
+      // Store user data in localStorage
       localStorage.setItem('userRole', userRole);
       localStorage.setItem('userName', userName);
+      localStorage.setItem('userId', userId); // Add userId to localStorage
 
       navigate('/dashboard'); // Redirect to dashboard
     } catch (error) {
