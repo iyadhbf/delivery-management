@@ -3,7 +3,22 @@ import * as XLSX from 'xlsx';
 
 const ExportButton = ({ deliveries }) => {
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(deliveries);
+    // Check if deliveries is defined and is an array
+    if (!Array.isArray(deliveries) || deliveries.length === 0) {
+      console.error('Deliveries data is empty or invalid');
+      return; // Prevent further execution if deliveries is invalid
+    }
+
+    // Modify the location string before exporting
+    const modifiedDeliveries = deliveries.map(delivery => {
+      return {
+        ...delivery,
+        location: delivery.location === "View on Google Maps" ? "Actual Location String" : delivery.location
+      };
+    });
+
+    // Create Excel sheet and export it
+    const worksheet = XLSX.utils.json_to_sheet(modifiedDeliveries);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Deliveries');
     XLSX.writeFile(workbook, 'deliveries.xlsx');
