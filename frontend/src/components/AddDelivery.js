@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addDelivery } from '../services/api';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const AddDelivery = () => {
   const navigate = useNavigate();
@@ -39,10 +40,23 @@ const AddDelivery = () => {
         throw new Error('Assigned To field is missing or invalid.');
       }
       await addDelivery(formData);
-      navigate('/dashboard');
+      Swal.fire({
+        icon: 'success',
+        title: 'Delivery Added!',
+        text: 'The delivery has been successfully added.',
+        confirmButtonText: 'OK',
+      }).then(() => {
+        navigate('/dashboard');
+      });
     } catch (err) {
       setError(err.response?.data?.error || 'Error adding delivery. Please try again.');
       console.error('Error response:', err.response || err.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error || 'Something went wrong. Please try again.',
+        confirmButtonText: 'OK',
+      });
     }
   };
 
