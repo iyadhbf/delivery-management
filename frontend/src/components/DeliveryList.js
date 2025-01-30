@@ -70,7 +70,7 @@ const DeliveryList = ({ deliveries, onDelete, onUpdate }) => {
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Filter filterStatus={filterStatus} setFilterStatus={setFilterStatus} />
 
-      <ExportButton onExport={exportToExcel} />
+      <ExportButton deliveries={filteredDeliveries} onExport={exportToExcel} />
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

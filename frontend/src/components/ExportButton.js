@@ -4,16 +4,22 @@ import * as XLSX from 'xlsx';
 const ExportButton = ({ deliveries }) => {
   const exportToExcel = () => {
     // Check if deliveries is defined and is an array
-    if (!Array.isArray(deliveries) || deliveries.length === 0) {
-      console.error('Deliveries data is empty or invalid');
-      return; // Prevent further execution if deliveries is invalid
+    if (!deliveries || !Array.isArray(deliveries)) {
+      console.error('Deliveries data is undefined or not an array');
+      return;
+    }
+
+    // Check if deliveries array is empty
+    if (deliveries.length === 0) {
+      console.error('Deliveries data is empty');
+      return;
     }
 
     // Modify the location string before exporting
-    const modifiedDeliveries = deliveries.map(delivery => {
+    const modifiedDeliveries = deliveries.map((delivery) => {
       return {
         ...delivery,
-        location: delivery.location === "View on Google Maps" ? "Actual Location String" : delivery.location
+        location: delivery.location === "View on Google Maps" ? "Actual location String" : delivery.location,
       };
     });
 
