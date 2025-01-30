@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addDelivery } from '../services/api';
 import Swal from 'sweetalert2'; // Import SweetAlert2
+import deliveryBackground from '../assets/delivery.jpg'; // Import the same background image
 
 const AddDelivery = () => {
   const navigate = useNavigate();
@@ -65,82 +66,87 @@ const AddDelivery = () => {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Add Delivery</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded shadow">
-        {/* Client Name */}
-        <div className="mb-4">
-          <label htmlFor="clientName" className="block text-sm font-medium text-gray-700">
-            Client Name
-          </label>
-          <input
-            type="text"
-            id="clientName"
-            name="clientName"
-            value={formData.clientName}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
+    <div 
+      className="bg-fixed bg-cover bg-center min-h-screen flex flex-col items-center justify-center px-4 py-8"
+      style={{ backgroundImage: `url(${deliveryBackground})` }} // Use the same background image
+    >
+      <div className="bg-white bg-opacity-80 p-6 rounded-lg shadow-lg w-full max-w-xl">
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">Add Delivery</h1>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Client Name */}
+          <div>
+            <label htmlFor="clientName" className="block text-sm font-medium text-gray-700">
+              Client Name
+            </label>
+            <input
+              type="text"
+              id="clientName"
+              name="clientName"
+              value={formData.clientName}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
 
-        {/* Address */}
-        <div className="mb-4">
-          <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-            Address
-          </label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
+          {/* Address */}
+          <div>
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+              Address
+            </label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
 
-        {/* Status */}
-        <div className="mb-4">
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-            Status
-          </label>
-          <select
-            id="status"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          {/* Status */}
+          <div>
+            <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+              Status
+            </label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            >
+              <option value="en cours">En cours</option>
+              <option value="livré">Livré</option>
+            </select>
+          </div>
+
+          {/* Assigned To */}
+          <div>
+            <label htmlFor="assignedTo" className="block text-sm font-medium text-gray-700">
+              Assigned To
+            </label>
+            <input
+              type="text"
+              id="assignedTo"
+              name="assignedTo"
+              value={userName || 'Unknown'}
+              readOnly
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
           >
-            <option value="en cours">En cours</option>
-            <option value="livré">Livré</option>
-          </select>
-        </div>
-
-        {/* Assigned To */}
-        <div className="mb-4">
-          <label htmlFor="assignedTo" className="block text-sm font-medium text-gray-700">
-            Assigned To
-          </label>
-          <input
-            type="text"
-            id="assignedTo"
-            name="assignedTo"
-            value={userName || 'Unknown'}
-            readOnly
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100"
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        >
-          Add Delivery
-        </button>
-      </form>
+            Add Delivery
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
