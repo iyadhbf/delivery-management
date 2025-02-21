@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/api';
 import backgroundImage from '../assets/delivery.jpg';
-import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'; // Importing eye icons
+import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'; 
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,7 +17,7 @@ const Register = () => {
     try {
       const response = await register({ name, email, password, role });
       localStorage.setItem('token', response.token);
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       console.error('Error registering:', error);
     }

@@ -7,9 +7,6 @@ const Navbar = () => {
   const userRole = localStorage.getItem('userRole');
   const token = localStorage.getItem('token');
 
-  // Dark Mode State
-  
-  
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
@@ -17,14 +14,14 @@ const Navbar = () => {
 
   return (
     <nav className="relative w-[550px] h-[60px] mx-auto my-4">
-      <div className="absolute inset-0 bg-blue-600 dark:bg-zinc-900 flex justify-around items-center p-2 rounded-lg">
+      <div className="absolute inset-0 bg-white dark:bg-zinc-900 flex justify-around items-center p-2 rounded-lg shadow-lg">
         {token ? (
           <>
-            <Link to="/dashboard" className="px-6 py-2 text-white hover:bg-white/20">
+            <Link to="/dashboard" className="px-6 py-2 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-md">
               Dashboard
             </Link>
             {userRole === 'gestionnaire' && (
-              <Link to="/add-delivery" className="px-6 py-2 text-white hover:bg-white/20">
+              <Link to="/add-delivery" className="px-6 py-2 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-md">
                 Add Delivery
               </Link>
             )}
@@ -34,17 +31,17 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link to="/" className="px-6 py-2 text-white hover:bg-white/20">
+            <Link to="/" className="px-6 py-2 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-md">
               Login
             </Link>
-            <Link to="/register" className="px-6 py-2 text-white hover:bg-white/20">
+            <Link to="/register" className="px-6 py-2 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-md">
               Register
             </Link>
           </>
         )}
 
         {/* Dark Mode Toggle */}
-        <DarkModeToggle/>
+        <DarkModeToggle />
       </div>
     </nav>
   );

@@ -113,26 +113,27 @@ const DeliveryList = ({ deliveries, onDelete, onUpdate }) => {
                 <td className="px-6 py-4">
                   {typeof delivery.assignedTo === 'object' ? delivery.assignedTo.name : delivery.assignedTo}
                 </td>
-                {userRole === 'gestionnaire' && (
-                  <>
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => handleEdit(delivery)}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </button>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => handleDelete(delivery._id)}
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </>
-                )}
+                {(userRole === 'gestionnaire' || userRole === 'livreur') && (
+  <td className="px-6 py-4 text-right">
+    <button
+      onClick={() => handleEdit(delivery)}
+      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+    >
+      Edit
+    </button>
+  </td>
+)}
+{userRole === 'gestionnaire' && (
+  <td className="px-6 py-4 text-right">
+    <button
+      onClick={() => handleDelete(delivery._id)}
+      className="font-medium text-red-600 dark:text-red-500 hover:underline"
+    >
+      Delete
+    </button>
+  </td>
+)}
+
               </tr>
             ))}
           </tbody>
